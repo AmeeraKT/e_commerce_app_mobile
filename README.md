@@ -29,22 +29,57 @@
  ## 2.  Mention the widgets that you have used for this project and its uses.
 
         The widgets I used in this project are:
-            1. Containers which are used to customize child widgets and to place
-               child widgets within a designated area or box.
-            2. Text which are for adding text.
+            1. Containers which are used to customize child widgets' margin and paddings
+               and to place child widgets within a designated area or box.
+            2. Text which are for adding text strings.
             3. Icons which are for adding image icons to buttons.
-            4. Color for adding color to widgets.
-            5. 
- 
+            4. AppBar which is like a navigation bar in browser websites.
+            5. Scaffold which gives the app a basic page layout, it also has an AppBar
+               and body
+            6. Padding controls spaces around a child widget
+            7. Column arranges child widgets vertically
+            8. Row arranges child widgets horizontally
+            9. MaterialApp which is the root widget of the app, it gives navigation
+               support and themes for the rest of the app.
+           10. Card for displaying information in a box.
+           11. Center arranges child widgets in the middle of their parent.
+           12. SizedBox provides fixed space around or between widgets.
+           13. InkWell adds a ripple effect when the widget is tapped.
+           14. GridView.count gives a grid-based layout for the ItemCard widgets, it
+               has a fixed number of columns.
+           15. SnackBar appears on screen shortly with a message when the user interacts 
+               with the buttons on the main page.
+           16. Material provides styling to widgets such as background color and styled
+               shapes.
+           17. ItemCard is used for making interactive buttons with icons and text.
+           18. InfoCard displays information in a card for the name, NPM and class.
+           19. ItemHomePage represents the buttons that are to be displayed in the
+               ItemCard widget for buttons.
+  
  ## 3. What is the use-case for setState()? Explain the variable that can be affected by setState().
 
         The function of setState() is 
+        The setState() method tells the framework that when the state of a State object
+        has changed, making Flutter rebuild the affected UI and widgets with the
+        updated information. It is also for updating variables that affect the visual
+        presentation or data displayed on the UI. Variables within the State class,
+        such as user input data or counters, can be modified inside setState() to
+        trigger this rebuild. Without setState(), these changes would not be applied.
 
  ## 4. Explain the difference between const and final keyword.
-    
-        A const is .
-        
-        While a final keyword is .
+
+        Variables with const keyword should be assigned a value during compile-time,
+        after it is assigned a value it cannot change its value again during runtime.
+        Const is used for variables with known values at runtime.
+        Const is less flexible as the class must have a const constructor while
+        all of its fields should have final constructors.
+
+        While variables with the final keyword can be assigned to a value during
+        runtime but cannot be changed once assigned.
+        Final is used for variables whose values cannot be reassigned but can be
+        calculcated during runtime. Final is more flexible as it can be used with   
+        any constructor.
+ 
 
  ## Step-by-step explanation for checklist :
  ### 1. Create a new Flutter application with the E-Commerce theme that matches the previous assignments.
