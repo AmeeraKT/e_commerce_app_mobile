@@ -58,13 +58,14 @@
   
  ## 3. What is the use-case for setState()? Explain the variable that can be affected by setState().
 
-        The function of setState() is 
         The setState() method tells the framework that when the state of a State object
         has changed, making Flutter rebuild the affected UI and widgets with the
-        updated information. It is also for updating variables that affect the visual
-        presentation or data displayed on the UI. Variables within the State class,
-        such as user input data or counters, can be modified inside setState() to
-        trigger this rebuild. Without setState(), these changes would not be applied.
+        updated information. It is called within a State class and takes stateful widgets
+        as its parameter.
+        The function will update such widgets and their appearance on the UI.
+        Variables within the State class, such as user input data or counters, can be
+        modified inside setState() to trigger this rebuild. Without setState(),
+        these changes would not be applied.
 
  ## 4. Explain the difference between const and final keyword.
 
