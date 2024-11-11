@@ -1,6 +1,120 @@
 <details>
 <summary>ASSIGNMENT 7</summary>
 
+# ASSIGNMENT 8 QUESTIONS AND ANSWERS:
+
+ ## 1. What is the purpose of const in Flutter? Explain the advantages of using const in Flutter code. When should we use const, and when should it not be used?
+       
+       The purpose of const is to tell the Flutter compiler that the value of a variable
+       will never change and is known at compile time. For example if i assign a variable
+       a const keyword and the value 1, at compile-time this variable will be assgined
+       an unchanging value of 1.
+
+       One of the advantages of using const is improved performance because the variable
+       will never be rebuilt again once it is made, unlike other variable types.
+       Using const also leads to more concise widget trees and more efficient widget tree
+       management. Since variables or widgets with const do not have extra states to
+       rebuild into, these trees will be smaller and no unnecessary widgets will be created.
+
+       We should use const when we want the value of the variable to be unchanged
+       and to create only one copy of it.
+       When making stateless widgets, const should be used.
+       It should also be used when we want to define variables with predefined values.
+
+       We should not use const when we have variables or widgets whose value or state
+       will change throughout the lifetime of the app. The keyword should not be used
+       for making stateful widgets.
+
+ ## 2. Explain and compare the usage of Column and Row in Flutter. Provide example implementations of each layout widget!
+
+       Column is used for arranging widgets vertically in a vertical container.
+       Here is an example of using a column widget:
+```dart
+    child: const Column(
+      children: [
+        Text(
+          'Mental Health Tracker',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        Padding(padding: EdgeInsets.all(8)),
+        Text(
+          "Track your mental health every day here!",
+          // TODO: Add text style with center alignment, font size 15, white color, and normal weight
+        ),
+      ],
+    ),
+```
+       While Row is used for arranging widgets horizontally in a hortizontal
+       container. Here is an example of using a horizontal widget:
+```dart
+const Row(
+  children: <Widget>[
+    Expanded(
+      child: Text('Deliver features faster', textAlign: TextAlign.center),
+    ),
+    Expanded(
+      child: Text('Craft beautiful UIs', textAlign: TextAlign.center),
+    ),
+    Expanded(
+      child: FittedBox(
+        child: FlutterLogo(),
+      ),
+    ),
+  ],
+)
+```
+ 
+ ## 3. List the input elements you used on the form page in this assignment. Are there other Flutter input elements you didn't use in this assignment? Explain!
+
+       The input elements I used in this assignment are:
+       1. Form for creating an input form
+       2. (Text)FormField for creating areas or fields in the input form
+          for the user to type data into
+
+       The input elements I did not use in this assignment are:
+       1. Autocomplete which gives the user complete input suggestions
+          based on their incomplete input.
+       2. KeyboardListener which calls a callback when the user releases
+          or presses on a key on the keyboard.
+
+ ## 4. How do you set the theme within a Flutter application to ensure consistency? Did you implement a theme in your application?
+
+       To set a theme, I ensured that the colors used for widgets that appear in
+       other pages of the website are the same such as the navbar and some
+       buttons.
+       The main theme of the app is defined in main.dart over here:
+```dart
+        colorScheme: ColorScheme.fromSwatch(
+       primarySwatch: Colors.orange,
+ ).copyWith(secondary: Colors.orange[200]),
+        useMaterial3: true,
+      )
+```
+       I implemented a warm orange color as the main theme.
+
+ ## 5. How do you manage navigation in a multi-page Flutter application?
+
+       To manage navigation I used the Navigation widget, which keeps tracks of
+       visited pages in the app in a stack model.
+       When a new page or a route object is accessed, its data is pushed into 
+       the stack and displayed on the screen. When the back arrow is pressed,
+       the head of the stack is popped out. THe top of the stack can also be
+       replaced with other pages.
+
+       To implement routing, the name of the page's class should be defined
+       within a Navigation method so that the page's can be pushed, popped or
+       replaced in the navigation stack.
+
+</details>
+
+<details>
+<summary>ASSIGNMENT 7</summary>
+
 # ASSIGNMENT 7 QUESTIONS AND ANSWERS:
 
  ## 1.  Explain what are stateless widgets and stateful widgets, and explain the difference between them.
