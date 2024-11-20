@@ -3,7 +3,7 @@ import 'package:e_commerce_app_mobile/models/product_entry.dart';
 import 'package:e_commerce_app_mobile/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:e_commerce_app_mobile/screens/productentry_detail.dart'; // Start of new code
+import 'package:e_commerce_app_mobile/screens/productentry_detail.dart';
 
 class ProductEntryPage extends StatefulWidget {
   const ProductEntryPage({super.key});
@@ -81,7 +81,6 @@ class _ProductEntryPageState extends State<ProductEntryPage> {
                 );
               },
             );
-            // End of new code
           }
         },
       ),
