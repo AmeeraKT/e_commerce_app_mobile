@@ -224,10 +224,8 @@ final request = context.watch<CookieRequest>();
        5. Create a page containing a list of all items available at the JSON endpoint in Django that you have deployed.
        &
        6. Display the name, price, and description of each item on this page.
-       &
-       7. Create a detail page for each item listed on the Product list page.
-
-
+              (note: i hid the price and description of the items
+              they are visible after clicking them to view the details.)
        
               1. I created new file 'list_productentry.dart' in lib/screens.
 
@@ -268,7 +266,51 @@ else if (item.name == "View Product") {
     );
 }
 ```
+       7. Create a detail page for each item listed on the Product list page.
 
+              In lib/screens I created a new file productentry_details.dart
+              and filled it with the following code:
+```dart
+import 'package:flutter/material.dart';
+import 'package:e_commerce_app_mobile/models/product_entry.dart';
+
+class ProductEntryDetailPage extends StatelessWidget {
+  final ProductEntry product;
+
+  const ProductEntryDetailPage({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product.fields.name),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous page
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              product.fields.name,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text(product.fields.description),
+            const SizedBox(height: 10),
+            Text("Price: ${product.fields.price}"),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
        8. This page can be accessed by tapping on any item on the Product list page.
        The page is accessed by pressing the View Cookie List button
        in the menu
@@ -304,7 +346,15 @@ else if (item.name == "View Product") {
 ...
 ```
        10. Add a button to return to the item list page.
-              The button already exists in the left drawer.
+              This is the button code:
+```dart
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous page
+          },
+        ),
+```
 
        11. Filter the item list page to display only items associated with the currently logged-in user.
               The items are already automatically filtered based on user

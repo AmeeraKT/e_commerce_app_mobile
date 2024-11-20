@@ -28,7 +28,7 @@ class ProductEntryDetailPage extends StatelessWidget {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            Text("Description: ${product.fields.description}"),
+            Text(product.fields.description),
             const SizedBox(height: 10),
             Text("Price: ${product.fields.price}"),
           ],
