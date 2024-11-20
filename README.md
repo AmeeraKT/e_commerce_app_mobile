@@ -1,5 +1,322 @@
 <details>
-<summary>ASSIGNMENT 7</summary>
+<summary>ASSIGNMENT 9</summary>
+
+# ASSIGNMENT 9 QUESTIONS AND ANSWERS:
+
+ ## 1. Explain why we need to create a model to retrieve or send JSON data. Will an error occur if we don't create a model first?
+       In Flutter, these models can convert JSON data into Dart objects
+       by parsing so that Flutter can use is more effectively. 
+       They can also convert data into JSON for sending back to
+       the Django backend.
+       These models eliminate the need to do manual JSON parsing for
+       data.
+       No errors will occur if a model if not made but there might be
+       type mismatches.
+
+ ## 2. Explain the function of the http library that you implemented for this task.
+       The http library is used in this task for making requests that will
+       be sent to the Django backend. The library has the actions GET, POST,
+       PUT and DELETE. The GET actions is for retrieving product list data
+       and the POST action is for submitting product data and login and
+       registration forms.
+       With the library, the Flutter app can send and receive actions to
+       and from the Django backend.
+
+ ## 3. Explain the function of CookieRequest and why it’s necessary to share the CookieRequest instance with all components in the Flutter app.
+       CookieRequest handles cookies sessions which tells the server that
+       the user who has logged in is authenticated. Sharing a CookieRequest
+       instance with all components ensures that cookies is implemented in
+       every HTTP request so all pages of the app will know that the
+       current user is authenticated already and logged in.
+       This prevents the app from sending a login request each time a
+       different page is accessed or when another HTTP request is sent.
+
+## 4. Explain the mechanism of data transmission, from input to display in Flutter.
+       Data transmission starts when a user submits a product form on the
+       Flutter app. Flutter sends a POST request to the Django backend
+       and the data is processed and stored. After that, Django sends the
+       data back in JSON format which gets parsed into Dart objects by the 
+       models in Flutter. The objects are then displayed on the updated app
+       UI by the FutureBuild tool.
+       The same process occurs for GET actions sent by the user from the 
+       Flutter app.
+
+## 5. Explain the authentication mechanism from login, register, to logout. Start from inputting account data in Flutter to Django’s completion of the authentication process and display of the menu in Flutter.
+       When a user submits the user registration form or the log in form
+       on the Flutter app, a POST request and the data is sent to the Django
+       backend using CookieRequest.
+       This data is then authenticated and a token, session and cookie is
+       sent to the Flutter app so Flutter can remember the user logged in.
+       When the user logs out, Flutter sends a DELETE request for the
+       session and cookie which is also deleted on the Flutter app.
+       The UI of the app changes based on the authentication status of the
+       user. For example it will not show the main page if they are not
+       logged in.
+
+ ## Step-by-step explanation for checklist :
+
+       1. Implement the registration feature in the Flutter project.
+
+              1. I created a new file called register.dart in
+              lib/screens.
+
+              2. I then added code to make the fully functional
+              register page and form.
+
+       2. Create a login page in the Flutter project.
+
+              1. I created a new file called login.dart in lib/screens.
+
+              2. Next I added code in login.dart to make a functional page
+
+              3. In main.dart I changed home: MyHomePage() to
+              home: LoginPage() and imported login.dart.
+
+              4. I imported register.dart into login.dart.
+
+
+       3. Integrate the Django authentication system with the Flutter project.
+       
+              1. I created a new app called authentication on my Django
+              app and added it to installed apps in /e_commerce_app/
+              settings.py.
+
+              2. Next I installed django-cors-headers and added it to
+              the requirements file.
+
+              3. After that I added 
+              corsheaders.middleware.CorsMiddleware to MIDDLEWARE
+              in the same settings.py. 
+
+              4. I added the following variables below:
+```py
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+```
+              and added "10.0.2.2" in ALLOWED_HOSTS.
+
+              5. In /authentication/ views.py, I created a view
+              method for login and did URL routing for the method.
+
+              6. In /e_commerce_app/ urls.py I added this path:
+
+```py
+path('auth/', include('authentication.urls'))
+```
+       
+              7. In Flutter, I installed the following packages:
+
+              flutter pub add provider
+              flutter pub add pbp_django_auth 
+
+              8. Finally in main.dart I added the code below
+              to the root Widget. So that a Provier object will
+              be created which will share the CookieRequest
+              with all components in the app.
+
+```dart
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+
+  @override
+  Widget build(BuildContext context) {
+      
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+
+      child: MaterialApp(
+       ...
+```    
+              9. I then created a new register function in
+              /authentication/ views.py and imported the following:
+
+              from django.contrib.auth.models import User
+              import json
+
+              I also made url routing for the register method.    
+
+              10. In main/ views.py, I created a new function for
+              sending the product entries to the Flutter app
+```dart
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+
+        data = json.loads(request.body)
+        new_product = ProductEntryForm.objects.create(
+            user=request.user,
+            product=data["product"],
+            price=int(data["price"]),
+            description=data["description"]
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+```
+
+              11. I then did url routing for the new function above.
+
+              12. In Flutter I connected the productentry_form.dart with
+              CookieRequest by adding the line below:
+```dart
+final request = context.watch<CookieRequest>();
+```
+
+              13. In productentry_form.dart I changed the button:
+```dart
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        final response = await request.postJson(
+                          "http://localhost:8000/create-flutter/",
+                          jsonEncode(<String, String>{
+                            'name': _name,
+                            'price': _price.toString(),
+                            'description': _description,
+                          }),
+                        );
+                        if (context.mounted) {
+                          if (response['status'] == 'success') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "New product has been saved successfully!",
+                                ),
+                              ),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Something went wrong, please try again.",
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      }
+                    },
+```
+
+       4. Create a custom model according to your Django application project.
+
+              1. To create the Dart model I went to the Quicktype website
+              and inputted JSON data of cookie products from my Django
+              project.
+
+              2. I created a new folder 'models' and created a new file
+              'product_entry.dart' and added the model code here.
+
+       5. Create a page containing a list of all items available at the JSON endpoint in Django that you have deployed.
+       &
+       6. Display the name, price, and description of each item on this page.
+       &
+       7. Create a detail page for each item listed on the Product list page.
+
+
+       
+              1. I created new file 'list_productentry.dart' in lib/screens.
+
+              2. I then imported the following:
+
+                     import 'package:flutter/material.dart';
+                     import 'package:e_commerce_app_mobile/models/product_entry.dart';
+                     import 'package:e_commerce_app_mobile/widgets/left_drawer.dart';
+                     import 'package:pbp_django_auth/pbp_django_auth.dart';
+                     import 'package:provider/provider.dart';
+
+              3. Then added code to make the page functional.
+
+              4. I then added the new screen to the left drawer so it is accessible.
+```dart
+ListTile(
+leading: const Icon(Icons.add_reaction_rounded),
+title: const Text('Product List'),
+onTap: () {
+       // Route to the produt page
+       Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductEntryFormPage()),
+       );
+},
+),
+```
+              5. In product_card.dart I added the following code so that the 
+              product list page is accessible
+```dart
+import 'package:e_commerce_app_mobile/screens/list_productentry.dart';
+
+else if (item.name == "View Product") {
+    Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const ProductEntryPage()
+        ),
+    );
+}
+```
+
+       8. This page can be accessed by tapping on any item on the Product list page.
+       The page is accessed by pressing the View Cookie List button
+       in the menu
+
+       9. Display all attributes of your item model on this page.
+
+              All of the attributes are displayed by the following
+              code snippet in list_productentry.dart:
+```dart
+...
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${snapshot.data![index].fields.name}",
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text("${snapshot.data![index].fields.description}"),
+                      const SizedBox(height: 10),
+                      Text("${snapshot.data![index].fields.price}"),
+                    ],
+...
+```
+       10. Add a button to return to the item list page.
+              The button already exists in the left drawer.
+
+       11. Filter the item list page to display only items associated with the currently logged-in user.
+              The items are already automatically filtered based on user
+              in the Django backend.
+
+
+
+
+</details>
+
+<details>
+<summary>ASSIGNMENT 8</summary>
 
 # ASSIGNMENT 8 QUESTIONS AND ANSWERS:
 

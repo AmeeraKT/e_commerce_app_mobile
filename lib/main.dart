@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:e_commerce_app_mobile/screens/menu.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:e_commerce_app_mobile/screens/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +13,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
+      
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+
+      child: MaterialApp(
+        title: 'Cookie Panda - E-commerce App',
+        theme: ThemeData(
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -30,11 +39,12 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSwatch(
-       primarySwatch: Colors.orange,
- ).copyWith(secondary: Colors.orange[200]),
-        useMaterial3: true,
-      ),
-      home: MyHomePage(),
-    );
+          primarySwatch: Colors.orange,
+          ).copyWith(secondary: Colors.orange[200]),
+          useMaterial3: true,
+        ),
+        home: const LoginPage(),
+      )
+    ); 
   }
 }
